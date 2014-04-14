@@ -4,9 +4,14 @@ describe Minfraud do
 
   describe '.configure' do
     it 'yields the Minfraud module' do
+      Minfraud.stub(:has_required_configuration?).and_return(true)
       Minfraud.configure do |c|
         expect(c).to eql(Minfraud)
       end
+    end
+
+    it 'raises an exception if required fields are not set' do
+      expect { Minfraud.configure { |c| true } }.to raise_exception(Minfraud::ConfigurationError)
     end
   end
 

@@ -1,6 +1,8 @@
 require "minfraud/version"
 
 module Minfraud
+
+  class ConfigurationError < ArgumentError; end
   
   # May be used to configure using common block style:
   #
@@ -12,6 +14,9 @@ module Minfraud
   #
   def self.configure
     yield self
+    unless has_required_configuration?
+      raise ConfigurationError, 'You must set license_key so MaxMind can identify you'
+    end
   end
 
   # Module attribute getter for license_key
@@ -30,6 +35,10 @@ module Minfraud
   # MaxMind minFraud API service URI
   def self.uri
     'https://minfraud.maxmind.com/app/ccv2r'
+  end
+
+  def self.has_required_configuration?
+    class_variable_defined?(:@@license_key)
   end
 
 end
