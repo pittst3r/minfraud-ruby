@@ -1,24 +1,32 @@
-# Minfraud::Ruby
+# Ruby interface to the MaxMind minFraud API
 
-TODO: Write a gem description
+## Configuration
 
-## Installation
+Your license key is how MaxMind will identify you, so it is required.
 
-Add this line to your application's Gemfile:
-
-    gem 'minfraud-ruby'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install minfraud-ruby
+```ruby
+Minfraud.configure do |c|
+  c.license_key = 'abcd1234'
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+transaction = Minfraud::Transaction.new do |t|
+  # Required fields
+  # Other fields listed later in documentation are optional
+  t.ip = '1.2.3.4'
+  t.city = 'richmond'
+  t.state = 'virginia'
+  t.postal = '12345'
+  t.country = 'US' # http://en.wikipedia.org/wiki/ISO_3166-1
+  # ...
+end
+
+transaction.risk_score
+# => 3.48
+```
 
 ## Contributing
 

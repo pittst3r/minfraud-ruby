@@ -6,7 +6,7 @@ module Minfraud
   #
   # ```ruby
   # Minfraud.configure do |c|
-  #   c.license_key = abcd1234
+  #   c.license_key = 'abcd1234'
   # end
   # ```
   #
@@ -25,6 +25,11 @@ module Minfraud
   # It is required for this gem to work.
   def self.license_key=(key)
     @@license_key = key
+  end
+
+  # MaxMind minFraud API service URI
+  def self.uri
+    'https://minfraud.maxmind.com/app/ccv2r'
   end
 
 end

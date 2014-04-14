@@ -34,4 +34,10 @@ describe Minfraud do
     end
   end
 
+  describe '.uri' do
+    it 'returns the minFraud service uri' do
+      expect(Minfraud.uri).to eq('https://minfraud.maxmind.com/app/ccv2r')
+    end
+  end
+
 end
