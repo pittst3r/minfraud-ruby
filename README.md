@@ -28,6 +28,20 @@ transaction.risk_score
 # => 3.48
 ```
 
+### Transaction fields
+
+#### Required
+
+| name          | type (length)         | example                             | description |
+| ------------- | --------------------- | ----------------------------------- | ----------- |
+| ip            | string                | `t.ip = '1.2.3.4'`                  | The IP address of the customer placing the order. This should be passed as a string like "44.55.66.77" or "2001:db8::2:1". |
+
+#### Optional
+
+| name          | type (length)         | example                             | description |
+| ------------- | --------------------- | ----------------------------------- | ----------- |
+| ship_addr     | string                | `t.ship_addr = '123 fake st'`       | The IP address of the customer placing the order. This should be passed as a string like "44.55.66.77" or "2001:db8::2:1". |
+
 ## Contributing
 
 1. Fork it ( http://github.com/<my-github-username>/minfraud-ruby/fork )
