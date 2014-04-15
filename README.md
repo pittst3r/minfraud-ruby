@@ -1,5 +1,7 @@
 # Ruby interface to the MaxMind minFraud API
 
+[Complete API documentation](http://rubydoc.info/github/rdpitts/minfraud-ruby/master/frames)
+
 ## Configuration
 
 Your license key is how MaxMind will identify you, so it is required.
