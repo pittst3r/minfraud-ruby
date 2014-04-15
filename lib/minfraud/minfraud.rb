@@ -1,5 +1,3 @@
-require "minfraud/version"
-
 module Minfraud
 
   class ConfigurationError < ArgumentError; end

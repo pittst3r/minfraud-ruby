@@ -15,6 +15,14 @@ module Minfraud
       validate_attributes
     end
 
+    # Retrieves the risk score from MaxMind.
+    # A higher score indicates a higher risk of fraud.
+    # For example, a score of 20 indicates a 20% chance that a transaction is fraudulent.
+    # @return [Float] 0.01 - 100.0
+    def risk_score
+      results.risk_score
+    end
+
     private
 
     # Ensures the required attributes are present
@@ -38,6 +46,13 @@ module Minfraud
       unless attribute.instance_of?(String)
         raise TransactionError, "Transaction.#{attr_name} must me a string"
       end
+    end
+
+    # Sends transaction to MaxMind in order to get risk data on it.
+    # Caches response object in @response.
+    # @return [Response]
+    def results
+      @response ||= Request.post(self)
     end
 
   end

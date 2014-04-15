@@ -1,2 +1,5 @@
 require 'minfraud/minfraud'
 require 'minfraud/transaction'
+require 'minfraud/request'
+require 'minfraud/response'
+require 'minfraud/version'

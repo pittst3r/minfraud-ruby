@@ -29,4 +29,49 @@ describe Minfraud::Transaction do
     end
   end
 
+  describe '#risk_score' do
+    subject(:transaction) do
+      Minfraud::Transaction.new do |t|
+        t.stub(:has_required_attributes?).and_return(true)
+        t.stub(:validate_attributes).and_return(nil)
+      end
+    end
+    let(:response) { double(risk_score: risk_score) }
+    let(:risk_score) { 3.4 }
+
+    before do
+      Minfraud::Request.stub(:post).and_return(response)
+    end
+
+    context 'transaction has not already been sent to MaxMind' do
+      it 'sends transaction to MaxMind' do
+        expect(Minfraud::Request).to receive(:post).with(transaction)
+        transaction.risk_score
+      end
+
+      it 'caches response' do
+        transaction.risk_score
+        expect(transaction.instance_variable_get(:@response)).to eql(response)
+      end
+
+      it 'returns float containing risk score' do
+        transaction.risk_score
+        expect(transaction.risk_score).to eq(risk_score)
+      end
+    end
+
+    context 'transaction has already been sent to MaxMind' do
+      before { transaction.instance_variable_set(:@response, response) }
+
+      it 'does not send transaction to MaxMind' do
+        expect(Minfraud::Request).not_to receive(:post)
+        transaction.risk_score
+      end
+
+      it 'returns float containing risk score' do
+        expect(transaction.risk_score).to eq(risk_score)
+      end
+    end
+  end
+
 end
