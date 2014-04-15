@@ -2,8 +2,16 @@ module Minfraud
 
   class Response
 
-    def initialize
+    def initialize(raw)
       
+    end
+
+    def errored?
+
+    end
+
+    def error
+
     end
 
     private

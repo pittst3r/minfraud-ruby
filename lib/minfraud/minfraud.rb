@@ -2,6 +2,7 @@ module Minfraud
 
   class ConfigurationError < ArgumentError; end
   class TransactionError < ArgumentError; end
+  class ResponseError < ArgumentError; end
   
   # May be used to configure using common block style:
   #
@@ -37,9 +38,9 @@ module Minfraud
   end
 
   # MaxMind minFraud API service URI
-  # @return [String] service URI
+  # @return [URI::HTTPS] service uri
   def self.uri
-    'https://minfraud.maxmind.com/app/ccv2r'
+    @@uri ||= URI('https://minfraud.maxmind.com/app/ccv2r')
   end
 
   # @return [Boolean] service URI

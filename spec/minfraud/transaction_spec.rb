@@ -74,4 +74,24 @@ describe Minfraud::Transaction do
     end
   end
 
+  describe '#attributes' do
+    subject(:transaction) do
+      Minfraud::Transaction.new do |t|
+        t.ip = 'ip'
+        t.city = 'city'
+        t.state = 'state'
+        t.postal = 'postal'
+        t.country = 'country'
+      end
+    end
+
+    it 'returns a hash of attributes' do
+      expect(transaction.attributes[:ip]).to eq('ip')
+      expect(transaction.attributes[:city]).to eq('city')
+      expect(transaction.attributes[:state]).to eq('state')
+      expect(transaction.attributes[:postal]).to eq('postal')
+      expect(transaction.attributes[:country]).to eq('country')
+    end
+  end
+
 end

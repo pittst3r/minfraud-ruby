@@ -23,6 +23,19 @@ module Minfraud
       results.risk_score
     end
 
+    # Hash of attributes that have been set
+    # @return [Hash] present attributes
+    def attributes
+      {
+        ip: ip,
+        city: city,
+        state: state,
+        postal: postal,
+        country: country,
+        license_key: Minfraud.license_key
+      }
+    end
+
     private
 
     # Ensures the required attributes are present
