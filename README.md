@@ -1,5 +1,6 @@
 # Ruby interface to the MaxMind minFraud API
 
+[![Build Status](https://travis-ci.org/rdpitts/minfraud-ruby.svg?branch=master)](https://travis-ci.org/rdpitts/minfraud-ruby)
 [![Code Climate](https://codeclimate.com/github/rdpitts/minfraud-ruby.png)](https://codeclimate.com/github/rdpitts/minfraud-ruby)
 
 [Complete API documentation](http://rubydoc.info/github/rdpitts/minfraud-ruby/master/frames)
