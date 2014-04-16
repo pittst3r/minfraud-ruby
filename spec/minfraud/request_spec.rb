@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Minfraud::Request do
   subject(:request) { Minfraud::Request.new(transaction) }
   let(:transaction) { double(Minfraud::Transaction, attributes: {}) }
-  let(:error_response) { double(Minfraud::Response, errored?: true, error: exception, body: '') }
   let(:success_response) { double(Minfraud::Response, errored?: false, body: '') }
   let(:exception) { Minfraud::ResponseError.new('Message from MaxMind: INVALID_LICENSE_KEY') }
 
@@ -53,12 +52,6 @@ describe Minfraud::Request do
         block.call double(:http, request: nil)
       end
       Minfraud::Request.new(trans).post
-    end
-
-    it 'raises an exception if MaxMind responds with an error' do
-      Minfraud::Response.stub(:new).and_return(error_response)
-      request.stub(:send_post_request)
-      expect { request.post }.to raise_exception(Minfraud::ResponseError, /Message from MaxMind/)
     end
 
     it 'creates Response object out of raw response' do

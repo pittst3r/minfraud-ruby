@@ -21,12 +21,7 @@ module Minfraud
     # Sends transaction to MaxMind and gives raw response to Response for handling
     # @return [Response] wrapper for minFraud response
     def post
-      res = Response.new(send_post_request)
-      if res.errored?
-        raise res.error
-      else
-        res
-      end
+      Response.new(send_post_request)
     end
 
     # (see #post)

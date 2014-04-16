@@ -1,25 +1,37 @@
 module Minfraud
 
+  # This class wraps the raw minFraud response. Any minFraud response field is accessible on a Response
+  # instance as a snake-cased instance method. For example, if you want the `ip_corporateProxy`
+  # field from minFraud, you can get it with `#ip_corporate_proxy`.
   class Response
 
+    ERROR_CODES = %w( INVALID_LICENSE_KEY IP_REQUIRED IP_NOT_FOUND LICENSE_REQUIRED COUNTRY_REQUIRED MAX_REQUESTS_REACHED )
+    WARNING_CODES = %w( COUNTRY_NOT_FOUND CITY_NOT_FOUND CITY_REQUIRED POSTAL_CODE_REQUIRED POSTAL_CODE_NOT_FOUND )
+
+    # Sets attributes on self using minFraud response keys and values
+    # Raises an exception if minFraud returns an error message
+    # Does nothing (at the moment) if minFraud returns a warning message
+    # Raises an exception if minFraud responds with anything other than an HTTP success code
     # @param raw [Net::HTTPResponse]
     def initialize(raw)
+      raise ResponseError, "The minFraud service responded with http error #{raw.class}" unless raw.is_a? Net::HTTPSuccess
       decode_body(raw.body)
-    end
-
-    # True if minFraud returns an error, false if not.
-    # @return [Boolean]
-    def errored?
-      !@error.nil?
-    end
-
-    # If minFraud sends back an error message, this will return the message, otherwise nil.
-    # @return [String, nil] minFraud error field in response
-    def error
-      @error
+      raise ResponseError, "Error message from minFraud: #{error}" if errored?
     end
 
     private
+
+    # True if minFraud returns an error (but not a warning), false if not.
+    # @return [Boolean]
+    def errored?
+      ERROR_CODES.include? err
+    end
+
+    # If minFraud sends back an error or warning message, this will return the message, otherwise nil.
+    # @return [String, nil] minFraud error field in response
+    def error
+      err
+    end
 
     # Parses raw response body and turns its keys and values into attributes on self.
     # @param body [String] raw response body string
@@ -51,7 +63,8 @@ module Minfraud
 
     # Allows keys in hash contained in @body to be used as methods
     def method_missing(meth, *args, &block)
-      @body[meth] ? @body[meth] : super
+      # We're not calling super because we want nil if an attribute isn't found
+      @body[meth]
     end
 
   end
