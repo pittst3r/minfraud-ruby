@@ -46,7 +46,7 @@ describe Minfraud::Request do
       }
       Minfraud.stub(:license_key).and_return('6')
       Net::HTTP.stub(:start) do |host, port, opts, &block|
-        expect(Net::HTTP::Post).to receive(:new).with(Minfraud.uri, request_body)
+        expect(Net::HTTP::Post).to receive(:new).with(Minfraud.uri.to_s, request_body)
         block.call double(:http, request: nil)
       end
       Minfraud::Request.new(trans).post

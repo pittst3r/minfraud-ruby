@@ -46,7 +46,8 @@ module Minfraud
     # Creates a Net::HTTP::Post object for the request
     # @return [Net::HTTP::Post]
     def post_object
-      Net::HTTP::Post.new(Minfraud.uri, encoded_body)
+      # Ruby 1.9.3 requires a string rather than a URI object
+      Net::HTTP::Post.new(Minfraud.uri.to_s, encoded_body)
     end
 
     def send_post_request
