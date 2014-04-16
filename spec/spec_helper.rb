@@ -1,4 +1,5 @@
 require 'minfraud-ruby'
+require 'ffaker'
 
 RSpec.configure do |config|
   config.mock_with :rspec

@@ -50,6 +50,7 @@ module Minfraud
       Net::HTTP::Post.new(Minfraud.uri.to_s, encoded_body)
     end
 
+    # @return [Net::HTTPResponse]
     def send_post_request
       Net::HTTP.start(Minfraud.uri.hostname, Minfraud.uri.port, use_ssl: true) do |http|
         http.request(post_object)

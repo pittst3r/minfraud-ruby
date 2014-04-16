@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Minfraud::Request do
   subject(:request) { Minfraud::Request.new(transaction) }
   let(:transaction) { double(Minfraud::Transaction, attributes: {}) }
-  let(:error_response) { double(Minfraud::Response, errored?: true, error: exception) }
-  let(:success_response) { double(Minfraud::Response, errored?: false) }
+  let(:error_response) { double(Minfraud::Response, errored?: true, error: exception, body: '') }
+  let(:success_response) { double(Minfraud::Response, errored?: false, body: '') }
   let(:exception) { Minfraud::ResponseError.new('Message from MaxMind: INVALID_LICENSE_KEY') }
 
   describe '.new' do
@@ -15,11 +15,13 @@ describe Minfraud::Request do
 
   describe '#post' do
     it 'sends request to MaxMind' do
+      Minfraud::Response.stub(:new).and_return(success_response)
       expect(Net::HTTP).to receive(:start)
       request.post
     end
 
     it 'sends post request' do
+      Minfraud::Response.stub(:new).and_return(success_response)
       Net::HTTP.stub(:start) do |host, port, opts, &block|
         http_dbl = double()
         expect(http_dbl).to receive(:request).with(an_instance_of(Net::HTTP::Post))
@@ -29,6 +31,7 @@ describe Minfraud::Request do
     end
 
     it 'sends appropriately encoded transaction data' do
+      Minfraud::Response.stub(:new).and_return(success_response)
       trans = Minfraud::Transaction.new do |t|
         t.ip = '1'
         t.city = '2'
