@@ -103,6 +103,24 @@ describe Minfraud::Transaction do
       expect(transaction.attributes[:email_md5]).to eq('01ddb59d9bc1d1bfb3eb99a22578ce33')
     end
 
+  end
+
+  describe '#requested_type' do
+    subject(:transaction) do
+      Minfraud::Transaction.new do |t|
+        t.ip = 'ip'
+        t.city = 'city'
+        t.state = 'state'
+        t.postal = 'postal'
+        t.country = 'country'
+        t.email = 'hughjass@example.com'
+        t.requested_type = 'standard'
+      end
+    end
+
+    before { Minfraud.requested_type = 'premium' }
+    after { Minfraud.remove_class_variable(:@@requested_type) }
+
     it 'uses requested type as set on transaction if present' do
       expect(transaction.attributes[:requested_type]).to eq('standard')
     end

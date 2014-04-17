@@ -49,34 +49,17 @@ module Minfraud
     # Hash of attributes that have been set
     # @return [Hash] present attributes
     def attributes
-      {
-        ip: ip,
-        city: city,
-        state: state,
-        postal: postal,
-        country: country,
-        license_key: Minfraud.license_key,
-        ship_addr: ship_addr,
-        ship_city: ship_city,
-        ship_state: ship_state,
-        ship_postal: ship_postal,
-        ship_country: ship_country,
-        email_domain: email.to_s.split('@').last,
-        email_md5: Digest::MD5.hexdigest(email.to_s),
-        phone: phone,
-        bin: bin,
-        session_id: session_id,
-        user_agent: user_agent,
-        accept_language: accept_language,
-        txn_id: txn_id,
-        amount: amount,
-        currency: currency,
-        txn_type: txn_type,
-        avs_result: avs_result,
-        cvv_result: cvv_result,
-        requested_type: (requested_type or Minfraud.requested_type),
-        forwarded_ip: forwarded_ip
-      }
+      attrs = [:ip, :city, :state, :postal, :country, :license_key, :ship_addr, :ship_city, :ship_state, :ship_postal, :ship_country, :email_domain, :email_md5, :phone, :bin, :session_id, :user_agent, :accept_language, :txn_id, :amount, :currency, :txn_type, :avs_result, :cvv_result, :requested_type, :forwarded_ip]
+      attrs.map! do |a|
+        [a, send(a)]
+      end
+      Hash[attrs]
+    end
+
+    # Uses the requested_type set on the instance, or if not present, the requested_type set during configuration
+    # @return [String, nil] requested type
+    def requested_type
+      @requested_type or Minfraud.requested_type
     end
 
     private
@@ -109,6 +92,21 @@ module Minfraud
     # @return [Response]
     def results
       @response ||= Request.get(self)
+    end
+
+    # @return [String, nil] domain of the email address
+    def email_domain
+      email.to_s.split('@').last
+    end
+
+    # @return [String, nil] MD5 hash of the whole email address
+    def email_md5
+      Digest::MD5.hexdigest(email.to_s)
+    end
+
+    # @return [String] license key set during configuration
+    def license_key
+      Minfraud.license_key
     end
 
   end
