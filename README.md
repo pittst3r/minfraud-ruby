@@ -1,9 +1,13 @@
 # Ruby interface to the MaxMind minFraud API
 
+Compatible with version minFraud API v1.3  
+[minFraud API documentation](http://dev.maxmind.com/minfraud/)  
+[minFraud](http://www.maxmind.com/en/ccv_overview)
+
 [![Build Status](https://travis-ci.org/rdpitts/minfraud-ruby.svg?branch=master)](https://travis-ci.org/rdpitts/minfraud-ruby)
 [![Code Climate](https://codeclimate.com/github/rdpitts/minfraud-ruby.png)](https://codeclimate.com/github/rdpitts/minfraud-ruby)
 
-[Complete API documentation](http://rubydoc.info/github/rdpitts/minfraud-ruby/master/frames)
+[Rubydoc documentation](http://rubydoc.info/github/rdpitts/minfraud-ruby/master/frames)
 
 ## Configuration
 
@@ -39,13 +43,11 @@ transaction.risk_score
 
 | name          | type (length)         | example                             | description |
 | ------------- | --------------------- | ----------------------------------- | ----------- |
-| ip            | string                | `t.ip = '1.2.3.4'`                  | The IP address of the customer placing the order. This should be passed as a string like "44.55.66.77" or "2001:db8::2:1". |
-
-#### Optional
-
-| name          | type (length)         | example                             | description |
-| ------------- | --------------------- | ----------------------------------- | ----------- |
-| ship_addr     | string                | `t.ship_addr = '123 fake st'`       | The IP address of the customer placing the order. This should be passed as a string like "44.55.66.77" or "2001:db8::2:1". |
+| ip            | string                | `t.ip = '1.2.3.4'`                  | Customer IP address |
+| city          | string                | `t.city = 'new york'`               | Customer city |
+| state         | string                | `t.state = 'new york'`              | Customer state/province/region |
+| postal        | string                | `t.postal = '10014'`                | Customer zip/postal code |
+| country       | string                | `t.country = 'US'`                  | Customer ISO 3166-1 country code |
 
 ## Contributing
 
