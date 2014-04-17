@@ -65,7 +65,7 @@ module Minfraud
     # Caches response object in @response.
     # @return [Response]
     def results
-      @response ||= Request.post(self)
+      @response ||= Request.get(self)
     end
 
   end

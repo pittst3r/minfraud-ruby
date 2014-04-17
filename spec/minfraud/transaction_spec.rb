@@ -40,12 +40,12 @@ describe Minfraud::Transaction do
     let(:risk_score) { 3.4 }
 
     before do
-      Minfraud::Request.stub(:post).and_return(response)
+      Minfraud::Request.stub(:get).and_return(response)
     end
 
     context 'transaction has not already been sent to MaxMind' do
       it 'sends transaction to MaxMind' do
-        expect(Minfraud::Request).to receive(:post).with(transaction)
+        expect(Minfraud::Request).to receive(:get).with(transaction)
         transaction.risk_score
       end
 
@@ -64,7 +64,7 @@ describe Minfraud::Transaction do
       before { transaction.instance_variable_set(:@response, response) }
 
       it 'does not send transaction to MaxMind' do
-        expect(Minfraud::Request).not_to receive(:post)
+        expect(Minfraud::Request).not_to receive(:get)
         transaction.risk_score
       end
 

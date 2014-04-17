@@ -20,36 +20,29 @@ module Minfraud
 
     # Sends transaction to MaxMind and gives raw response to Response for handling
     # @return [Response] wrapper for minFraud response
-    def post
-      Response.new(send_post_request)
+    def get
+      Response.new(send_get_request)
     end
 
-    # (see #post)
-    # @param trans [Transaction] transaction to post to MaxMind
-    def self.post(trans)
-      new(trans).post
+    # (see #get)
+    # @param trans [Transaction] transaction to get to MaxMind
+    def self.get(trans)
+      new(trans).get
     end
 
     private
 
-    # Transforms Transaction object into a hash for Net::HTTP::Post
+    # Transforms Transaction object into a hash for Net::HTTP::Get
     # @return [Hash] keys are strings with minFraud field names
-    def encoded_body
+    def encoded_query
       Hash[@transaction.attributes.map { |k, v| [FIELD_MAP[k], v] }]
     end
 
-    # Creates a Net::HTTP::Post object for the request
-    # @return [Net::HTTP::Post]
-    def post_object
-      # Ruby 1.9.3 requires a string rather than a URI object
-      Net::HTTP::Post.new(Minfraud.uri.to_s, encoded_body)
-    end
-
     # @return [Net::HTTPResponse]
-    def send_post_request
-      Net::HTTP.start(Minfraud.uri.hostname, Minfraud.uri.port, use_ssl: true) do |http|
-        http.request(post_object)
-      end
+    def send_get_request
+      uri = Minfraud.uri
+      uri.query = URI.encode_www_form(encoded_query)
+      Net::HTTP.get_response(uri)
     end
 
   end

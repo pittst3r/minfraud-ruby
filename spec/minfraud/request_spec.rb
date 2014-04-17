@@ -12,24 +12,9 @@ describe Minfraud::Request do
     end
   end
 
-  describe '#post' do
-    it 'sends request to MaxMind' do
-      Minfraud::Response.stub(:new).and_return(success_response)
-      expect(Net::HTTP).to receive(:start)
-      request.post
-    end
-
-    it 'sends post request' do
-      Minfraud::Response.stub(:new).and_return(success_response)
-      Net::HTTP.stub(:start) do |host, port, opts, &block|
-        http_dbl = double()
-        expect(http_dbl).to receive(:request).with(an_instance_of(Net::HTTP::Post))
-        block.call http_dbl
-      end
-      request.post
-    end
-
-    it 'sends appropriately encoded transaction data' do
+  describe '#get' do
+    it 'sends appropriately encoded transaction data to minFraud service' do
+      Minfraud.stub(:license_key).and_return('6')
       Minfraud::Response.stub(:new).and_return(success_response)
       trans = Minfraud::Transaction.new do |t|
         t.ip = '1'
@@ -46,24 +31,23 @@ describe Minfraud::Request do
         'country' => '5',
         'license_key' => '6'
       }
-      Minfraud.stub(:license_key).and_return('6')
-      Net::HTTP.stub(:start) do |host, port, opts, &block|
-        expect(Net::HTTP::Post).to receive(:new).with(Minfraud.uri.to_s, request_body)
-        block.call double(:http, request: nil)
+      expect(Net::HTTP).to receive(:get_response) do |uri|
+        expect(uri.to_s).to include(Minfraud.uri.to_s)
+        expect(uri.query).to eql(URI.encode_www_form(request_body))
       end
-      Minfraud::Request.new(trans).post
+      Minfraud::Request.new(trans).get
     end
 
     it 'creates Response object out of raw response' do
-      expect(request).to receive(:send_post_request)
+      expect(request).to receive(:send_get_request)
       expect(Minfraud::Response).to receive(:new).and_return(success_response)
-      request.post
+      request.get
     end
 
     it 'returns Response object' do
-      request.stub(:send_post_request)
+      request.stub(:send_get_request)
       Minfraud::Response.stub(:new).and_return(success_response)
-      expect(request.post).to eql(success_response)
+      expect(request.get).to eql(success_response)
     end
   end
 
