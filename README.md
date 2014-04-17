@@ -40,6 +40,21 @@ transaction.risk_score
 # => 3.48
 ```
 
+### Exception handling
+
+There are three different exceptions that this gem may raise. Please be prepared to handle them:
+
+```ruby
+# Raised if configuration is invalid
+class ConfigurationError < ArgumentError; end
+
+# Raised if a transaction is invalid
+class TransactionError < ArgumentError; end
+
+# Raised if minFraud returns an error, or if there is an HTTP error
+class ResponseError < ArgumentError; end
+```
+
 ### Transaction fields
 
 #### Required

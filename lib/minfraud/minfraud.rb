@@ -1,7 +1,12 @@
 module Minfraud
 
+  # Raised if configuration is invalid
   class ConfigurationError < ArgumentError; end
+
+  # Raised if a transaction is invalid
   class TransactionError < ArgumentError; end
+
+  # Raised if minFraud returns an error, or if there is an HTTP error
   class ResponseError < ArgumentError; end
   
   # May be used to configure using common block style:
