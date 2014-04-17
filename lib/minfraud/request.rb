@@ -10,7 +10,27 @@ module Minfraud
       state: 'region',
       postal: 'postal',
       country: 'country',
-      license_key: 'license_key'
+      license_key: 'license_key',
+      ship_addr: 'shipAddr',
+      ship_city: 'shipCity',
+      ship_state: 'shipRegion',
+      ship_postal: 'shipPostal',
+      ship_country: 'shipCountry',
+      email_domain: 'domain',
+      email_md5: 'emailMD5',
+      phone: 'custPhone',
+      bin: 'bin',
+      session_id: 'sessionID',
+      user_agent: 'user_agent',
+      accept_language: 'accept_language',
+      txn_id: 'txnID',
+      amount: 'order_amount',
+      currency: 'order_currency',
+      txn_type: 'txn_type',
+      avs_result: 'avs_result',
+      cvv_result: 'cvv_result',
+      requested_type: 'requested_type',
+      forwarded_ip: 'forwardedIP'
     }
 
     # @param trans [Transaction] transaction to be sent to MaxMind

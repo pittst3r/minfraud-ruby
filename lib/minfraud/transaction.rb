@@ -1,11 +1,34 @@
+require 'digest/md5'
+
 module Minfraud
 
   # This is the container for the data you're sending to MaxMind.
   # A transaction holds data like name, address, IP, order amount, etc.
   class Transaction
 
-    # Required attributes when instantiating
+    # Required attribute
     attr_accessor :ip, :city, :state, :postal, :country
+
+    # Shipping address attribute (optional)
+    attr_accessor :ship_addr, :ship_city, :ship_state, :ship_postal, :ship_country
+
+    # User attribute (optional)
+    attr_accessor :email, :phone
+
+    # Credit card attribute (optional)
+    attr_accessor :bin
+
+    # Transaction linking attribute (optional)
+    attr_accessor :session_id, :user_agent, :accept_language
+
+    # Transaction attribute (optional)
+    attr_accessor :txn_id, :amount, :currency, :txn_type
+
+    # Credit card result attribute (optional)
+    attr_accessor :avs_result, :cvv_result
+
+    # Miscellaneous attribute (optional)
+    attr_accessor :requested_type, :forwarded_ip
 
     def initialize
       yield self
@@ -32,7 +55,27 @@ module Minfraud
         state: state,
         postal: postal,
         country: country,
-        license_key: Minfraud.license_key
+        license_key: Minfraud.license_key,
+        ship_addr: ship_addr,
+        ship_city: ship_city,
+        ship_state: ship_state,
+        ship_postal: ship_postal,
+        ship_country: ship_country,
+        email_domain: email.to_s.split('@').last,
+        email_md5: Digest::MD5.hexdigest(email.to_s),
+        phone: phone,
+        bin: bin,
+        session_id: session_id,
+        user_agent: user_agent,
+        accept_language: accept_language,
+        txn_id: txn_id,
+        amount: amount,
+        currency: currency,
+        txn_type: txn_type,
+        avs_result: avs_result,
+        cvv_result: cvv_result,
+        requested_type: (requested_type or Minfraud.requested_type),
+        forwarded_ip: forwarded_ip
       }
     end
 

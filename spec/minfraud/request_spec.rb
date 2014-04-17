@@ -33,7 +33,7 @@ describe Minfraud::Request do
       }
       expect(Net::HTTP).to receive(:get_response) do |uri|
         expect(uri.to_s).to include(Minfraud.uri.to_s)
-        expect(uri.query).to eql(URI.encode_www_form(request_body))
+        expect(uri.query).to include(URI.encode_www_form(request_body))
       end
       Minfraud::Request.new(trans).get
     end

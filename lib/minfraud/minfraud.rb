@@ -37,6 +37,21 @@ module Minfraud
     @@license_key = key
   end
 
+  # Module attribute getter for requested_type
+  # minFraud service level (standard/premium)
+  # @return [String, nil] service level if set
+  def self.requested_type
+    class_variable_defined?(:@@requested_type) ? @@requested_type : nil
+  end
+
+  # Module attribute setter for requested_type
+  # Desired service level (standard/premium)
+  # @param type [String] service level
+  # @return [String] service level
+  def self.requested_type=(type)
+    @@requested_type = type
+  end
+
   # MaxMind minFraud API service URI
   # @return [URI::HTTPS] service uri
   def self.uri

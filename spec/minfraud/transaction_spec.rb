@@ -82,8 +82,13 @@ describe Minfraud::Transaction do
         t.state = 'state'
         t.postal = 'postal'
         t.country = 'country'
+        t.email = 'hughjass@example.com'
+        t.requested_type = 'standard'
       end
     end
+
+    before { Minfraud.requested_type = 'premium' }
+    after { Minfraud.remove_class_variable(:@@requested_type) }
 
     it 'returns a hash of attributes' do
       expect(transaction.attributes[:ip]).to eq('ip')
@@ -92,6 +97,28 @@ describe Minfraud::Transaction do
       expect(transaction.attributes[:postal]).to eq('postal')
       expect(transaction.attributes[:country]).to eq('country')
     end
+
+    it 'derives email domain and an md5 hash of whole email from email attribute' do
+      expect(transaction.attributes[:email_domain]).to eq('example.com')
+      expect(transaction.attributes[:email_md5]).to eq('01ddb59d9bc1d1bfb3eb99a22578ce33')
+    end
+
+    it 'uses requested type as set on transaction if present' do
+      expect(transaction.attributes[:requested_type]).to eq('standard')
+    end
+
+    it 'uses requested type as set during configuration if not present in transaction' do
+      transaction = Minfraud::Transaction.new do |t|
+        t.ip = 'ip'
+        t.city = 'city'
+        t.state = 'state'
+        t.postal = 'postal'
+        t.country = 'country'
+        t.email = 'hughjass@example.com'
+      end
+      expect(transaction.attributes[:requested_type]).to eq('premium')
+    end
+
   end
 
 end
