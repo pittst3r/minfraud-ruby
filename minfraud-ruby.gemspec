@@ -10,6 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["robbie@sweatypitts.com"]
   spec.summary       = %q{Ruby interface to the MaxMind minFraud API service.}
   spec.license       = "GNU GPL"
+  spec.homepage      = "https://github.com/rdpitts/minfraud-ruby"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
