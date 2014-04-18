@@ -7,7 +7,7 @@ module Minfraud
   class TransactionError < ArgumentError; end
 
   # Raised if minFraud returns an error, or if there is an HTTP error
-  class ResponseError < ArgumentError; end
+  class ResponseError < StandardError; end
   
   # May be used to configure using common block style:
   #
