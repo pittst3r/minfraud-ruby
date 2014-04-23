@@ -1,4 +1,5 @@
 require 'net/http'
+require 'openssl'
 
 module Minfraud
 
@@ -62,7 +63,11 @@ module Minfraud
     def send_get_request
       uri = Minfraud.uri
       uri.query = URI.encode_www_form(encoded_query)
-      Net::HTTP.get_response(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      request = Net::HTTP::Get.new(uri.request_uri)
+      http.request(request)
     end
 
   end

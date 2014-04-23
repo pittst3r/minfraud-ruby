@@ -31,10 +31,12 @@ describe Minfraud::Request do
         'country' => '5',
         'license_key' => '6'
       }
-      expect(Net::HTTP).to receive(:get_response) do |uri|
-        expect(uri.to_s).to include(Minfraud.uri.to_s)
-        expect(uri.query).to include(URI.encode_www_form(request_body))
-      end
+      http = double(:http)
+      expect(Net::HTTP).to receive(:new).and_return(http)
+      expect(http).to receive(:use_ssl=).with(true)
+      expect(http).to receive(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
+      expect(Net::HTTP::Get).to receive(:new)
+      expect(http).to receive(:request).and_return(double())
       Minfraud::Request.new(trans).get
     end
 
