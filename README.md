@@ -52,7 +52,7 @@ class ConfigurationError < ArgumentError; end
 class TransactionError < ArgumentError; end
 
 # Raised if minFraud returns an error, or if there is an HTTP error
-class ResponseError < ArgumentError; end
+class ResponseError < StandardError; end
 ```
 
 ### Transaction fields
